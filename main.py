@@ -13,17 +13,12 @@ from nltk import FreqDist
 from nltk.tag import pos_tag
 from tkinter import scrolledtext
 
-# nltk.download('all')
-
 positive_tweets = twitter_samples.strings('positive_tweets.json')
 negative_tweets = twitter_samples.strings('negative_tweets.json')
 text = twitter_samples.strings('tweets.20150430-223406.json')
 tweet_tokens = twitter_samples.tokenized('positive_tweets.json')
 
-# print(tweet_tokens[0])
-
 tweet_tokens = twitter_samples.tokenized('positive_tweets.json')
-# print(pos_tag(tweet_tokens[0]))
 
 
 def lemmatize_sentence(tokens):
@@ -38,10 +33,6 @@ def lemmatize_sentence(tokens):
             pos = 'a'
         lemmatized_sentence.append(lemmatizer.lemmatize(word, pos))
     return lemmatized_sentence
-
-
-# print(lemmatize_sentence(tweet_tokens[0]))
-
 
 def remove_noise(tweet_tokens, stop_words=()):
     cleaned_tokens = []
@@ -65,12 +56,7 @@ def remove_noise(tweet_tokens, stop_words=()):
             cleaned_tokens.append(token.lower())
     return cleaned_tokens
 
-
-
-
 stop_words = stopwords.words('english')
-
-# print(remove_noise(tweet_tokens[0], stop_words))
 
 positive_tweet_tokens = twitter_samples.tokenized('positive_tweets.json')
 negative_tweet_tokens = twitter_samples.tokenized('negative_tweets.json')
@@ -84,15 +70,11 @@ for tokens in positive_tweet_tokens:
 for tokens in negative_tweet_tokens:
     negative_cleaned_tokens_list.append(remove_noise(tokens, stop_words))
 
-
-# print(positive_tweet_tokens[500])
-# print(positive_cleaned_tokens_list[500])
 def classify_tweet(custom_tweet):
     custom_tokens = remove_noise(word_tokenize(custom_tweet))
     features = dict([token, True] for token in custom_tokens)
     sentiment = classifier.classify(features)
     return sentiment
-
 
 def analyze():
     custom_tweet = input_text.get("1.0", "end-1c")
@@ -101,7 +83,6 @@ def analyze():
     result_text.delete("1.0", tk.END)
     result_text.insert(tk.END, f"Sentiment: {sentiment}\n")
     result_text.config(state=tk.DISABLED)
-
 
 def get_all_words(cleaned_tokens_list):
     for tokens in cleaned_tokens_list:
@@ -112,9 +93,6 @@ def get_all_words(cleaned_tokens_list):
 all_pos_words = get_all_words(positive_cleaned_tokens_list)
 
 freq_dist_pos = FreqDist(all_pos_words)
-
-
-# print(freq_dist_pos.most_common(10))
 
 def get_tweets_for_model(cleaned_tokens_list):
     for tweet_tokens in cleaned_tokens_list:
